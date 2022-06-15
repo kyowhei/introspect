@@ -11,6 +11,24 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::group(['middleware' => ['auth']], function(){
+    Route::get('/', 'PostController@index');
+    Route::post('/posts', 'PostController@store');
+    Route::get('/posts/create', 'PostController@create');
+    Route::get('/posts/{post}', 'PostController@show');
+    Route::delete('/posts/{post}', 'PostController@delete');
+    Route::get('/posts/{post}/edit', 'PostController@edit');
+    Route::put('/posts/{post}', 'PostController@update');
+    Route::get('/posts/{post}/feedback', 'PostController@fb_edit');
+    Route::get('/tags/{tag}', 'TagController@index');
+    Route::get('/categories/{category}', 'CategoryController@index');
+    Route::get('/chart/categories', 'ChartController@categories');
+    
+    });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::get('pwa_forecast', function(){ return view('pwa_forecast'); });
